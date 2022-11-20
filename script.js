@@ -3,10 +3,6 @@ const shelfUnread = document.querySelector('.shelf-unread');
 const displayBtn = document.querySelector('#display');
 const addBookBtn = document.querySelector('#addBook');
 
-/* display and input logic*/ 
-displayBtn.addEventListener('click', displayBooks);
-addBookBtn.addEventListener('click', addBookToLibrary);
-
 
 /* main logic */
 let myLibrary = [
@@ -30,6 +26,7 @@ function Book(name, author, pages, read){
     this.pages = pages
     this.read = read
     this.onDisplay = false;
+    this.index = 0;
 }
 
 function addBookToLibrary(){
@@ -120,11 +117,27 @@ function addBookToLibrary(){
         myLibrary.push(newBook);
 
         document.body.removeChild(newForm);
+        displayBooks();
     })
-
 
     // const newBook = new Book();
     // myLibrary.push(newBook);
+}
+
+/* display and input logic*/ 
+displayBtn.addEventListener('click', displayBooks);
+addBookBtn.addEventListener('click', addBookToLibrary);
+
+function resetDisplay()
+{
+    myLibrary.forEach(item =>{
+        item.onDisplay = false;
+    })
+    const books = document.querySelectorAll('.book');
+    books.forEach(book =>{
+        book.remove();
+    })
+    displayBooks();
 }
 
 function displayBooks(){
@@ -133,21 +146,68 @@ function displayBooks(){
         {
             addBook(book, shelfRead);
             book.onDisplay = true;
+            book.index = myLibrary.indexOf(book);
         }
         else if(book.read === 'unread' && !book.onDisplay)
         {
             addBook(book, shelfUnread);
             book.onDisplay = true;
+            book.index = myLibrary.indexOf(book);
         }
     })
 
     function addBook(book, shelf) {
         const div = document.createElement('div');
         const bookText = document.createElement('p');
+        const removeBtn = document.createElement('button');
+        const toggleRead = document.createElement('button');
+
         shelf.appendChild(div);
+        div.classList.add('book');
+
         div.appendChild(bookText);
-        bookText.textContent = book.author + ' ' +
-            book.name + ' ' + book.pages;
+        bookText.textContent = book.author + '\r\n' +
+        book.name + '\r\n' + book.pages;
         
+        div.dataset.index = book.index;
+
+        div.appendChild(removeBtn);
+        removeBtn.textContent = 'Remove';
+        
+        removeBtn.addEventListener('click', (e)=>{
+            myLibrary.splice(e.target.dataset.index, 1);
+            shelf.removeChild(div);
+        })
+
+        div.appendChild(toggleRead);
+        if (book.read == 'read')
+        {
+            toggleRead.textContent = 'Mark unread'
+            div.dataset.read = 'read';
+        }
+        else
+        {
+            toggleRead.textContent = 'Mark read';
+            div.dataset.read = 'unread';
+        }
+
+        toggleRead.addEventListener('click', (e) =>
+        {
+            if (div.dataset.read == 'read')
+            {
+                console.log(myLibrary[book.index].read);
+                myLibrary[book.index].read = 'unread';
+                e.target.dataset.read == 'unread';
+                console.log(myLibrary[book.index].read);
+                resetDisplay();
+            }
+            else
+            {
+
+                myLibrary[book.index].read = 'read';
+                e.target.dataset.read = 'read';
+                resetDisplay();
+            }
+        })
     }
 }

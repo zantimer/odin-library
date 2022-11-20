@@ -12,8 +12,9 @@ body{
     grid-template-rows: 50px 1fr;
 }
 .main{
-    width: 50vw;
-    height: 90vh;
+    width: 50.5vw;
+    height: fit-content;
+    min-height: 90vh;
     margin: auto;
     border: 10px solid brown;
     grid-column: 2/3;
@@ -27,7 +28,8 @@ body{
     display: grid;
     place-items: flex-end;
     grid-template-rows: repeat(auto-fit, 1fr);
-    grid-template-columns: repeat(auto-fit, 56px);
+    grid-template-columns: repeat(auto-fit, 100px);
+    gap: 5px;
     
     
 }
@@ -35,9 +37,11 @@ body{
 .shelf-unread div{
     border: 3px solid black;
     border-collapse: unset;
-    width: fit-content;
-    height: 100px;
+    width: 100px;
+    height: 150px;
     background-color: var(--bookcolour);
+    white-space: pre;
+    display: grid;
 }
 
 .buttons{
