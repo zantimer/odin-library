@@ -6,11 +6,17 @@
     box-sizing: border-box;
     
 }
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px 1fr;
+}
 .main{
     width: 50vw;
     height: 90vh;
     margin: auto;
     border: 10px solid brown;
+    grid-column: 2/3;
 }
 .shelf-read,
 .shelf-unread{
@@ -30,6 +36,30 @@
     border: 3px solid black;
     border-collapse: unset;
     width: fit-content;
-    height: fit-content;
+    height: 100px;
     background-color: var(--bookcolour);
+}
+
+.buttons{
+    width: 150px;
+    margin: 0 auto;
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+.submit{
+    height: 50px;
+    width: 50px;
+    margin: 0 auto;
+}
+
+.input-form{
+    grid-column: 1/2;
+    grid-row-start: 2;
+    height: 200px;
+
+    display: grid;
 }
