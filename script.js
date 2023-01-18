@@ -68,8 +68,8 @@ function addBookToLibrary(){
     document.body.appendChild(formDiv);
     formDiv.classList.add('input-form');
 
-    formDiv.appendChild(authorLabel);
     authorLabel.textContent = 'Author:'
+    formDiv.appendChild(authorLabel);
     formDiv.appendChild(author);
     
     titleLabel.textContent = 'Title:'

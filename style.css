@@ -42,6 +42,8 @@ body{
     background-color: var(--bookcolour);
     white-space: pre;
     display: grid;
+    overflow-wrap: break-word;
+    place-content: center;
 }
 
 .buttons{
