@@ -58,18 +58,56 @@ class DisplayManager{
 
     addBooks()
     {
-        addBtn.addEventListener('click', ()=>{
-        
         const formDiv = document.createElement('div');
-        formDiv.classList.add('form-div');
+        const buttons = document.querySelector('.buttons');
+        buttons.appendChild(formDiv);
+        formDiv.classList.add('input-form');
+        const formField = (field='', type, value = '', group = '') =>{
+            const felde = document.createElement('input');
+            const feldeLabel = document.createElement('label');
+            
+            formDiv.appendChild(felde);
+            formDiv.appendChild(feldeLabel);
+            
+            feldeLabel.textContent = `${field}`;
 
-        const author = document.createElement('input');
-        const authorLabel = document.createElement('label');
-        authorLabel.htmlFor = 'author';
-        author.name = 'author';
-        author.type = 'text';
-        author.id = 'author';
-        });
+            feldeLabel.htmlFor = `${field}`;
+            if (group != '')
+            {
+                felde.name = `${group}`;
+            }
+            else
+            {
+                felde.name = `${field}`;
+            }
+            felde.type = `${type}`;
+            felde.id = `${field}`;
+            felde.value = `${value}`;
+
+            return {felde}
+        }
+
+        const author = formField('author', 'text');
+        const title = formField('title', 'text');
+        const pages = formField('pages', 'tel');
+        const btnRead = formField('read', 'radio', 'read', 'read-unread');
+        const btnUnread = formField('unread', 'radio', 'unread', 'read-unread');
+        const submit = formField(undefined, 'submit', 'Submit');
+        
+
+        const inputForm = document.querySelector('.input-form');
+        inputForm.addEventListener('change', ()=>{
+            if (author.felde.value != ''&&
+                title.felde.value != ''&&
+                pages.felde.value != '')
+            {
+                submit.felde.disabled = false;
+            }
+            else
+            {
+                submit.felde.disabled = true;
+            }
+        })
     }
 }
 
@@ -81,7 +119,8 @@ const test1 = new Book('hobbit', 'jolkien', '256', false);
 const test2 = new Book('robbit', 'jolkien', '256', true);
 
 
-
+addBtn.addEventListener('click', ()=>{
+    displayMng.addBooks()});
 
 btnDisplay.addEventListener('click', ()=>{
  displayMng.displayBooks()});
