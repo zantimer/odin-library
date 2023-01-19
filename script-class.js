@@ -16,10 +16,12 @@ class Book {
     this.read = read;
     this.onDisplay = false;
     this.info = ` ${name} \n by ${author}\n ${pages} pages`;
-    }
+    this.index = 0;
+}
     
     addBookToLib(){
         myLibrary.push(this);
+        this.index = myLibrary.indexOf(this);
     }
     
 }
@@ -38,6 +40,8 @@ class DisplayManager{
     {
         console.log('1');
         this.library.forEach((book)=>{
+            if (book.onDisplay == false)
+            {
             const div = document.createElement('div');
             const p = document.createElement('p');
             console.log('2');
@@ -53,6 +57,45 @@ class DisplayManager{
                 shelfUnread.appendChild(div);
             }
             console.log('5');
+            book.onDisplay = true;
+            
+
+            const btnFlipRead = document.createElement('button');
+            btnFlipRead.textContent = 'Read/Unread';
+            div.appendChild(btnFlipRead);
+            btnFlipRead.classList.add(`.index${book.index}`);
+            
+            btnFlipRead.addEventListener('click', (e)=>{
+               console.log(myLibrary[e.target.classList.value.slice(6)]);
+                if (myLibrary[e.target.classList.value.slice(6)].read == true)
+                {
+                    shelfUnread.appendChild(div);
+                    myLibrary[e.target.classList.value.slice(6)].read = false;
+                }
+                else
+                {
+                    shelfRead.appendChild(div);
+                    myLibrary[e.target.classList.value.slice(6)].read = true;
+                }
+               
+            })
+            
+            const btnRemoveFromLib = document.createElement('button');
+            btnRemoveFromLib.textContent = 'Remove';
+            div.appendChild(btnRemoveFromLib);
+            btnRemoveFromLib.classList.add(`.index${book.index}`);
+
+            btnRemoveFromLib.addEventListener('click', (e)=>{
+                const index = e.target.classList.value.slice(6);
+                if (index > -1)
+                {
+                myLibrary.splice(index, 1);
+                this.displayBooks();
+                div.remove();
+                }
+            })
+
+        }
         })
     }
 
@@ -107,6 +150,20 @@ class DisplayManager{
             {
                 submit.felde.disabled = true;
             }
+
+        })
+
+        submit.felde.addEventListener('click', (e)=>{
+
+            e.preventDefault();
+            if (!submit.felde.disabled)
+            {
+                const newBook = new Book(`${title.felde.value}`,
+                `${author.felde.value}`, `${pages.felde.value}`, btnRead.felde.checked ? true:false);
+
+                newBook.addBookToLib();
+                this.displayBooks();
+            }
         })
     }
 }
@@ -117,7 +174,6 @@ let displayMng = new DisplayManager(myLibrary);
 const test = new Book('jobbit', 'jolkien', '256', true);
 const test1 = new Book('hobbit', 'jolkien', '256', false);
 const test2 = new Book('robbit', 'jolkien', '256', true);
-
 
 addBtn.addEventListener('click', ()=>{
     displayMng.addBooks()});
